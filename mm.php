@@ -1,5 +1,21 @@
 <?php
 
+$input2 = "";
+$fromUnit = "";
+$toUnit = "";
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $input = $_POST["input"];
+    $input2 = $input;
+    $fromUnit = $_POST["fromUnit"];
+    $toUnit = $_POST["toUnit"];
+
+    if (isset($_POST['swap'])) {
+        $temp = $fromUnit;
+        $fromUnit = $toUnit;
+        $toUnit = $temp;
+    }
+}
 function convertToImperial($input, $fromUnit, $toUnit) {
 
     if ($fromUnit === $toUnit) {
@@ -7,6 +23,7 @@ function convertToImperial($input, $fromUnit, $toUnit) {
     }
 
     switch ($fromUnit) {
+        
         case 'มิลลิเมตร(mm)':
             $input = $input * 0.03937;
             break;
@@ -66,6 +83,7 @@ function convertToImperial($input, $fromUnit, $toUnit) {
     return $input;
 }
 
+
 ?>
 <!DOCTYPE html>
 <html lang="th">
@@ -92,38 +110,41 @@ function convertToImperial($input, $fromUnit, $toUnit) {
     <h2>โปรแกรมแปลงหน่วย: เมตริกเป็นอังกฤษ</h2>
     <br>
     <form method="POST">
+    <div class="col col-sm-3 mx-auto">
         <label for="input">กรอกค่า: </label>
-        <input type="text" name="input" id="input">
+        <input require type="number" class="form-control" name="input" id="input" value="<?php echo $input2 ?>" >
+        </div>
+        <div class="col col-sm-3 mx-auto">
         <label for="fromUnit">จาก: </label>
-        <select name="fromUnit" id="fromUnit">
-            <option value="มิลลิเมตร(mm)">มิลลิเมตร(mm)</option>
-            <option value="เซนติเมตร(cm)">เซนติเมตร(cm)</option>
-            <option value="เมตร(m)">เมตร(m)</option>
-            <option value="กิโลเมตร(km)">กิโลเมตร(km)</option>
-            <option value="นิ้ว(in)">นิ้ว(in)</option>
-            <option value="ฟุต(ft)">ฟุต(ft)</option>
-            <option value="หลา(yd)">หลา(yd)</option>
-            <option value="ไมล์(mi)">ไมล์(mi)</option>
+        <select class="form-control" name="fromUnit" id="fromUnit">
+            <option value="มิลลิเมตร(mm)" <?php if($fromUnit === "มิลลิเมตร(mm)") echo "selected"; ?>>(mm)</option>
+            <option value="เซนติเมตร(cm)" <?php if($fromUnit === "เซนติเมตร(cm)") echo "selected"; ?>>(cm)</option>
+            <option value="เมตร(m)" <?php if($fromUnit === "เมตร(m)") echo "selected"; ?>>(m)</option>
+            <option value="กิโลเมตร(km)" <?php if($fromUnit === "กิโลเมตร(km)") echo "selected"; ?>>(km)</option>
+            <option value="นิ้ว(in)" <?php if($fromUnit === "นิ้ว(in)") echo "selected"; ?>>(in)</option>
+            <option value="ฟุต(ft)" <?php if($fromUnit === "ฟุต(ft)") echo "selected"; ?>>(ft)</option>
+            <option value="หลา(yd)" <?php if($fromUnit === "หลา(yd)") echo "selected"; ?>>(yd)</option>
+            <option value="ไมล์(mi)" <?php if($fromUnit === "ไมล์(mi)") echo "selected"; ?>>(mi)</option>
         </select>
+        </div>
+        <div class="col col-sm-3 mx-auto">
         <label for="toUnit">เป็น: </label>
-        <select name="toUnit" id="toUnit">
-            <option value="มิลลิเมตร(mm)">มิลลิเมตร(mm)</option>
-            <option value="เซนติเมตร(cm)">เซนติเมตร(cm)</option>
-            <option value="เมตร(m)">เมตร(m)</option>
-            <option value="กิโลเมตร(km)">กิโลเมตร(km)</option>
-            <option value="นิ้ว(in)">นิ้ว(in)</option>
-            <option value="ฟุต(ft)">ฟุต(ft)</option>
-            <option value="หลา(yd)">หลา(yd)</option>
-            <option value="ไมล์(mi)">ไมล์(mi)</option>
+        <select class="form-control" name="toUnit" id="toUnit">
+            <option value="มิลลิเมตร(mm)" <?php if($toUnit === "มิลลิเมตร(mm)") echo "selected"; ?>>(mm)</option>
+            <option value="เซนติเมตร(cm)" <?php if($toUnit === "เซนติเมตร(cm)") echo "selected"; ?>>(cm)</option>
+            <option value="เมตร(m)" <?php if($toUnit === "เมตร(m)") echo "selected"; ?>>(m)</option>
+            <option value="กิโลเมตร(km)" <?php if($toUnit === "กิโลเมตร(km)") echo "selected"; ?>>(km)</option>
+            <option value="นิ้ว(in)" <?php if($toUnit === "นิ้ว(in)") echo "selected"; ?>>(in)</option>
+            <option value="ฟุต(ft)" <?php if($toUnit === "ฟุต(ft)") echo "selected"; ?>>(ft)</option>
+            <option value="หลา(yd)" <?php if($toUnit === "หลา(yd)") echo "selected"; ?>>(yd)</option>
+            <option value="ไมล์(mi)" <?php if($toUnit === "ไมล์(mi)") echo "selected"; ?>>(mi)</option>
         </select>
-        <button type="submit" name="signup" class="btn btn-danger">เเปลง</button>
+        </div>
+        <br>
+        <button type="submit" name="signup" class="btn btn-success">เเปลง</button>
+        <button type="submit" name="swap" class="btn btn-warning">สลับหน่วย</button>
     </form>
     <?php
-
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $input = $_POST["input"];
-    $fromUnit = $_POST["fromUnit"];
-    $toUnit = $_POST["toUnit"];
 
     if (empty($input)) {
         echo "<p>กรุณากรอกค่าเพื่อทำการแปลงหน่วย</p>";
@@ -131,12 +152,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $result = convertToImperial($input, $fromUnit, $toUnit);
 
         if ($result !== null) {
-            echo "<h4>ผลลัพธ์</h4><p>{$input} {$fromUnit} เท่ากับ {$result} {$toUnit}</p>";
+            echo "<br><h4>ผลลัพธ์</h4><p>{$input} {$fromUnit} = {$result} {$toUnit}</p>";
         } else {
             echo "<p>ไม่สามารถแปลงหน่วยได้</p>";
         }
     }
-}
 
 ?>
 </div>
